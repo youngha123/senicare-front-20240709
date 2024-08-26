@@ -47,11 +47,27 @@ export default function Auth() {
         const message = isMatched ? '' : '영문, 숫자를 혼용하여 8 ~ 13자 입력해주세요';
         setPasswordMessage(message);
         setPasswordMessageError(!isMatched);
+
+        if (!passwordCheck) return;
+
+        const isEqual = passwordCheck === value;
+        const checkMessage = isEqual ? '' : '비밀번호가 일치하지 않습니다.';
+        setPasswordCheckMessage(checkMessage);
+        setPasswordCheckMessageError(!isEqual);
     };
 
     const onPasswordCheckChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { value } = event.target;
         setPasswordCheck(value);
+
+        if (!password) return; 
+    
+        const isEqual = password === value ;
+        const message = isEqual ? '' : '비밀번호가 일치하지 않습니다.';
+
+        setPasswordCheckMessage(message);
+        setPasswordCheckMessageError(!isEqual);
+
     };
 
     const onTelNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -74,13 +90,29 @@ export default function Auth() {
     };
 
     const onTelNumberSendClickHandler = () => {
-        if (!telNumber) return;
-        alert('인증번호 전송!');
+        
+        const pattern = /^(?=.*[0-9]).{11}$/;
+        const isMatched = pattern.test(telNumber);
+
+        const telNumberMessage = isMatched ? '인증번호가 전송되었습니다.' : '숫자 11자 입력해주세요.';
+        
+        setTelNumberMessage(telNumberMessage);
+        setTelNumberMessageError(!isMatched);
+
+        
     };
 
     const onAuthNumberCheckClickHandler = () => {
         if (!authNumber) return;
-        alert('인증번호 확인!');
+    
+        
+        const Verification = authNumber === '1234';
+        const message = Verification ? '인증번호가 확인되었습니다.' : '인증번호가 일치하지 않습니다.';
+        
+        setAuthNumberMessage(message);
+        setAuthNumberMessageError(!Verification);
+
+        if (!Verification) return;
     };
     
     return (
