@@ -74,15 +74,15 @@ export default function Auth() {
         const { value } = event.target;
         setTelNumber(value);
 
-        // const pattern = /^(?=.*[0-9]).{11}$/;
-        // const isMatched = pattern.test(value);
+        const pattern = /^(?=.*[0-9]).{11}$/;
+        const isMatched = pattern.test(value);
 
-        // const telNumberMessage = isMatched ? '' : '숫자 11자 입력해주세요.';
+        const telNumberMessage = isMatched ? '' : '숫자 11자 입력해주세요.';
         
-        // setTelNumberMessage(telNumberMessage);
-        // setTelNumberMessageError(!isMatched);
+        setTelNumberMessage(telNumberMessage);
+        setTelNumberMessageError(!isMatched);
 
-        // if (!isMatched) return;
+        if (!isMatched) return;
     };
 
     const onAuthNumberChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
