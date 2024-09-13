@@ -7,6 +7,8 @@ import { IdCheckRequestDto, SignInRequestDto, SignUpRequestDto, TelAuthCheckRequ
 import { ResponseDto } from 'src/apis/dto/response';
 import { SignInResponseDto } from 'src/apis/dto/response/auth';
 import { useCookies } from 'react-cookie';
+import { ACCESS_TOKEN, CS_ABSOLUT_PATH, ROOT_PATH } from 'src/constants';
+import { useNavigate } from 'react-router';
 
 type AuthPath = '회원가입' | '로그인';
 
@@ -296,6 +298,9 @@ function SignIn({ onPathChange }: AuthComponentProps) {
     // state: 로그인 입력 메시지 상태 //
     const [message, setMessage] = useState<string>('');
 
+    // function: 네비이게이터 함수 //
+    const navigator = useNavigate();
+
     // function: 로그인 Response 처리 함수 //
     const signInResponse = (responseBody: SignInResponseDto | ResponseDto | null) => {
         const message = 
@@ -312,7 +317,10 @@ function SignIn({ onPathChange }: AuthComponentProps) {
         }
 
         const { accessToken, expiration } = responseBody as SignInResponseDto;
-        
+        const expires = new Date(Date.now() + (expiration * 1000));
+        setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
+
+        navigator(CS_ABSOLUT_PATH);
     };
 
     // event handler: 아이디 변경 이벤트 처리 //
