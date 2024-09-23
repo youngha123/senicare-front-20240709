@@ -7,7 +7,7 @@ import { IdCheckRequestDto, SignInRequestDto, SignUpRequestDto, TelAuthCheckRequ
 import { ResponseDto } from 'src/apis/dto/response';
 import { SignInResponseDto } from 'src/apis/dto/response/auth';
 import { useCookies } from 'react-cookie';
-import { ACCESS_TOKEN, CS_ABSOLUT_PATH, ROOT_PATH } from 'src/constants';
+import { ACCESS_TOKEN, CS_ABSOLUTE_PATH, ROOT_PATH } from 'src/constants';
 import { useNavigate } from 'react-router';
 import { useSearchParams } from 'react-router-dom';
 
@@ -336,7 +336,7 @@ function SignIn({ onPathChange }: AuthComponentProps) {
         const expires = new Date(Date.now() + (expiration * 1000));
         setCookie(ACCESS_TOKEN, accessToken, { path: ROOT_PATH, expires });
 
-        navigator(CS_ABSOLUT_PATH);
+        navigator(CS_ABSOLUTE_PATH);
     };
 
     // event handler: 아이디 변경 이벤트 처리 //

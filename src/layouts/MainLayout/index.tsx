@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router'
 import './style.css';
 import path from 'path';
 import { useCookies } from 'react-cookie';
-import { ACCESS_TOKEN, AUTH_ABSOLUTE_PAHT, CS_ABSOLUT_PATH, CS_PATH, HR_ABSOLUT_PATH, HR_PATH, MM_ABSOLUT_PATH, MM_PATH, ROOT_ABSOLUTE_PATH } from 'src/constants';
+import { ACCESS_TOKEN, AUTH_ABSOLUTE_PATH, CS_ABSOLUTE_PATH, CS_PATH, HR_ABSOLUTE_PATH, HR_PATH, MM_ABSOLUTE_PATH, MM_PATH, ROOT_ABSOLUTE_PATH } from 'src/constants';
 
 // component: 로고 컴포넌트 //
 function Logo() {
@@ -40,7 +40,7 @@ function Top() {
     // event handler: 로그아웃 버튼 클릭 이벤트 처리 //
     const onLogoutButtonClickHandler = () => {
         removeCookie(ACCESS_TOKEN, { path: ROOT_ABSOLUTE_PATH });
-        navigator(AUTH_ABSOLUTE_PAHT);
+        navigator(AUTH_ABSOLUTE_PATH);
     };
 
     // render: 상단 컴포넌트 렌더링 //
@@ -76,15 +76,15 @@ function SideNavigation() {
     return (
         <div id='layout-side-navigation'>
             <div className='navigation'>
-                <div className={`navigation-item ${isCs ? 'active' : ''}`} onClick={() => onItemClickHandler(CS_ABSOLUT_PATH)}>
+                <div className={`navigation-item ${isCs ? 'active' : ''}`} onClick={() => onItemClickHandler(CS_ABSOLUTE_PATH)}>
                     <div className={`icon ${isCs ? 'cs-active-icon' : 'cs-icon'}`}></div>
                     <div className='item-text'>고객 관리</div>
                 </div>
-                <div className={`navigation-item ${isMm ? 'active' : ''}`} onClick={() => onItemClickHandler(MM_ABSOLUT_PATH)}>
+                <div className={`navigation-item ${isMm ? 'active' : ''}`} onClick={() => onItemClickHandler(MM_ABSOLUTE_PATH)}>
                 <div className={`icon ${isMm ? 'mm-active-icon' : 'mm-icon'}`}></div>
                     <div className='item-text'>용품 관리</div>
                 </div>
-                <div className={`navigation-item ${isHr ? 'active' : ''}`} onClick={() => onItemClickHandler(HR_ABSOLUT_PATH)}>
+                <div className={`navigation-item ${isHr ? 'active' : ''}`} onClick={() => onItemClickHandler(HR_ABSOLUTE_PATH)}>
                 <div className={`icon ${isHr ? 'hr-active-icon' : 'hr-icon'}`}></div>
                     <div className='item-text'>인사 관리</div>
                 </div>
