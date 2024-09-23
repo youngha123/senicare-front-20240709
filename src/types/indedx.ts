@@ -1,4 +1,4 @@
-import Tool from "./tooo.interface";
+import Tool from "./tool.interface";
 import SignInUser from "./sign-in-user.interface";
 
 export type {

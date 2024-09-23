@@ -5,8 +5,8 @@ import { ACCESS_TOKEN } from 'src/constants';
 import { PostToolRequestDto } from 'src/apis/dto/request/tool';
 import { getToolListRequest, postToolRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
-import Tool from 'src/types/tooo.interface';
 import { GetToolListResponseDto } from 'src/apis/dto/response/tool';
+import { Tool } from 'src/types' ;
 
 // interface: 용품 등록 컴포넌트 Properties //
 interface PostBoxProps {
@@ -127,17 +127,22 @@ function PatchBox() {
         </div>
     )
 
+// interface: 용품 리스트 아이템 컴포넌트 Properties //
+interface TableRowProps{
+    tool: Tool,
+}
+
 }
 // component: 용품 리스트 아이템 컴포넌트 //
-function TableRow() {
+function TableRow({ tool }: TableRowProps) {
 
     // render: 용품 리스트 아이템 컴포넌트 렌더링 //
     return (
         <div className='tr'>
-            <div className='td-tool-number'>용품번호</div>
-            <div className='td-name'>용품명</div>
-            <div className='td-purpose'>용도</div>
-            <div className='td-count'>개수</div>
+            <div className='td-tool-number'>{tool.toolNumber}</div>
+            <div className='td-name'>{tool.name}</div>
+            <div className='td-purpose'>{tool.purpose}</div>
+            <div className='td-count'>{tool.count}</div>
             <div className='td-buttons'>
                 <div className='td-edit'>
                     <div className='icon-button edit'></div>
@@ -203,7 +208,7 @@ export default function MM() {
             {showPostBox && <PostBox  unShow={unShowPostBox} />}
             {showPatchBox && <PatchBox />}
             <div className='top'>
-                <div className='top-text'>전체 <span className='emphasis'>150건</span> | 페이지 <span className='emphasis'>1/100</span></div>
+                <div className='top-text'>전체 <span className='emphasis'>{toolList.length}</span> | 페이지 <span className='emphasis'>1/100</span></div>
                 {!showPostBox && !showPatchBox && <div className='button primary' onClick={onPostButtonClickHandler}>등록</div>}
             </div>
             <div className='main'>

@@ -1,4 +1,4 @@
-import Tool from "src/types/tooo.interface";
+import Tool from "src/types/tool.interface";
 import ResponseDto from "../response.dto";
 
 // interface: get tool list response body Dto //
