@@ -2,8 +2,8 @@ import React, { ChangeEvent, useEffect, useState } from 'react'
 import './style.css';
 import { useCookies } from 'react-cookie';
 import { ACCESS_TOKEN } from 'src/constants';
-import { PostToolRequestDto } from 'src/apis/dto/request/tool';
-import { getToolListRequest, getToolRequest, postToolRequest } from 'src/apis';
+import { PatchToolRequestDto, PostToolRequestDto } from 'src/apis/dto/request/tool';
+import { getToolListRequest, getToolRequest, patchToolRequest, postToolRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetToolListResponseDto, GetToolResponseDto } from 'src/apis/dto/response/tool';
 import Tool from 'src/types/tool.interface';
@@ -126,7 +126,7 @@ function PatchBox({ toolNumber, unShow }: PatchBoxProps) {
     const getToolResponse = (responseBody: GetToolListResponseDto | ResponseDto | null) => {
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'VF' ? '모든 값을 입력해주세요.' :
+            responseBody.code === 'VF' ? '잘못된 접근입니다.' :
             responseBody.code === 'AF' ? '잘못된 접근입니다.' :
             responseBody.code === 'NT' ? '존재하지 않는 용품입니다.' :
             responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
@@ -142,6 +142,24 @@ function PatchBox({ toolNumber, unShow }: PatchBoxProps) {
         setName(name);
         setPurpose(purpose);
         setCount(String(count));
+    };
+
+    // function: patch tool response 처리 함수 //
+    const patchToolResponse = (responseBody: ResponseDto | null) => {
+        const message = 
+            !responseBody ? '서버에 문제가 있습니다.' :
+            responseBody.code === 'VF' ? '모든 값을 입력해주세요.' :
+            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+            responseBody.code === 'NT' ? '존재하지 않는 용품입니다.' :
+            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+
+        const isSuccessed = responseBody !== null && responseBody.code === 'SU';
+        if (!isSuccessed) {
+            alert(message);
+            return;
+        }
+
+        unShow();
     };
 
     // event handler: 용품 이름 변경 이벤트 처리 함수 //
@@ -163,6 +181,22 @@ function PatchBox({ toolNumber, unShow }: PatchBoxProps) {
         const isNumber = regexp.test(value);
         if (!isNumber) return;
         setCount(value);
+    };
+
+    // event handler: 수정 버튼 클릭 이벤트 처리 함수 //
+    const onUpdateButtonClickHandler = () => {
+        if (!name || !purpose || !count) {
+            alert('모든 값을 입력해주세요.');
+            return;
+        }
+        
+        const accessToken = cookies[ACCESS_TOKEN];
+        if (!accessToken) return;
+
+        const requestBody: PatchToolRequestDto = {
+            name, purpose, count: Number(count)
+        };
+        patchToolRequest(requestBody, toolNumber, accessToken).then(patchToolResponse);
     };
 
     // effect: toolNumber가 변경될 시 실행할 함수 //
@@ -189,7 +223,7 @@ function PatchBox({ toolNumber, unShow }: PatchBoxProps) {
                     <input className='input' value={count} placeholder='개수를 입력해주세요' onChange={onCountChangeHandler}/>
                 </div>
             </div>
-            <div className='button second'>수정</div>
+            <div className='button second' onClick={onUpdateButtonClickHandler}>수정</div>
             <div className='button disable' onClick={unShow}>취소</div>
         </div>
     )
@@ -320,7 +354,7 @@ export default function MM() {
                         <div className='td-purpose'>용도</div>
                         <div className='td-count'>개수</div>
                         <div className='td-buttons'>
-                            <div className='td-edit' >수정</div>
+                            <div className='td-edit'>수정</div>
                             <div className='td-delete'>삭제</div>
                         </div>
                     </div>
