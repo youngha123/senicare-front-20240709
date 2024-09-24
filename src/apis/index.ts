@@ -25,6 +25,9 @@ const TOOL_MODUL_URL = `${SENICARE_API_DOMAIN}/api/v1/tool`;
 
 const POST_TOOL_API_URL = `${TOOL_MODUL_URL}`;
 const GET_TOOL_LIST_API_URL = `${TOOL_MODUL_URL}`;
+const GET_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODUL_URL}/${toolNumber}`;
+const PATCH_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODUL_URL}/${toolNumber}`;
+const DELETE_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODUL_URL}/${toolNumber}`;
 
 // function: Authorization Bearer 헤더 //
 const bearerAuthorization = (accessToken: String) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } })
