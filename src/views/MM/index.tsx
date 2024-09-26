@@ -6,11 +6,9 @@ import { PatchToolRequestDto, PostToolRequestDto } from 'src/apis/dto/request/to
 import { deleteToolRequest, getToolListRequest, getToolRequest, patchToolRequest, postToolRequest } from 'src/apis';
 import { ResponseDto } from 'src/apis/dto/response';
 import { GetToolListResponseDto, GetToolResponseDto } from 'src/apis/dto/response/tool';
-import Tool from 'src/types/tool.interface';
-import { start } from 'repl';
 import { usePagination } from 'src/hooks';
 import Pagination from 'src/components/Pagination';
-import { get } from 'http';
+import Tool from 'src/types/tool.interface';
 
 // interface: 용품 등록 컴포넌트 Properties //
 interface PostBoxProps {
@@ -127,14 +125,14 @@ function PatchBox({ toolNumber, unShow, getToolList }: PatchBoxProps) {
     const [count, setCount] = useState<string>('');
 
     // function: get tool response 처리 함수 //
-    const getToolResponse = (responseBody: GetToolListResponseDto | ResponseDto | null) => {
+    const getToolResponse = (responseBody: GetToolResponseDto | ResponseDto | null) => {
         const message =
             !responseBody ? '서버에 문제가 있습니다.' :
             responseBody.code === 'VF' ? '잘못된 접근입니다.' :
             responseBody.code === 'AF' ? '잘못된 접근입니다.' :
             responseBody.code === 'NT' ? '존재하지 않는 용품입니다.' :
             responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
+
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             alert(message);
@@ -150,13 +148,13 @@ function PatchBox({ toolNumber, unShow, getToolList }: PatchBoxProps) {
 
     // function: patch tool response 처리 함수 //
     const patchToolResponse = (responseBody: ResponseDto | null) => {
-        const message = 
+        const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'VF' ? '모든 값을 입력해주세요.' :
+            responseBody.code === 'VF' ? '모든 값을 입력해주세요.' : 
             responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'NT' ? '존재하지 않는 용품입니다.' :
+            responseBody.code === 'NT' ? '존재하지 않는 용품입니다.' : 
             responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-
+        
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             alert(message);
@@ -194,7 +192,7 @@ function PatchBox({ toolNumber, unShow, getToolList }: PatchBoxProps) {
             alert('모든 값을 입력해주세요.');
             return;
         }
-        
+
         const accessToken = cookies[ACCESS_TOKEN];
         if (!accessToken) return;
 
@@ -217,15 +215,15 @@ function PatchBox({ toolNumber, unShow, getToolList }: PatchBoxProps) {
             <div className='post-patch-input-container'>
                 <div className='input-box'>
                     <div className='input-label'>용품명</div>
-                    <input className='input' value={name} placeholder='용품명을 입력해주세요' onChange={onNameChangeHandler}/>
+                    <input className='input' value={name} placeholder='용품명을 입력해주세요' onChange={onNameChangeHandler} />
                 </div>
                 <div className='input-box' style={{ flex: 1 }}>
                     <div className='input-label'>용도</div>
-                    <input className='input' value={purpose} placeholder='용도를 입력해주세요' onChange={onPurposeChangeHandler}/>
+                    <input className='input' value={purpose} placeholder='용도를 입력해주세요' onChange={onPurposeChangeHandler} />
                 </div>
                 <div className='input-box'>
                     <div className='input-label'>개수</div>
-                    <input className='input' value={count} placeholder='개수를 입력해주세요' onChange={onCountChangeHandler}/>
+                    <input className='input' value={count} placeholder='개수를 입력해주세요' onChange={onCountChangeHandler} />
                 </div>
             </div>
             <div className='button second' onClick={onUpdateButtonClickHandler}>수정</div>
@@ -250,13 +248,13 @@ function TableRow({ tool, getToolList, onUpdateButtonClickHandler }: TableRowPro
 
     // function: delete tool response 처리 함수 //
     const deleteToolResponse = (responseBody: ResponseDto | null) => {
-        const message =
-            !responseBody ?  '서버에 문제가 있습니다.' :
+        const message = 
+            !responseBody ? '서버에 문제가 있습니다.' :
             responseBody.code === 'VF' ? '잘못된 접근입니다.' :
             responseBody.code === 'AF' ? '잘못된 접근입니다.' :
             responseBody.code === 'NT' ? '존재하지 않는 용품입니다.' :
             responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
-        
+
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
             alert(message);
@@ -305,7 +303,7 @@ export default function MM() {
     // state: 등록 및 수정 박스 뷰 상태 //
     const [showPostBox, setShowPostBox] = useState<boolean>(false);
     const [showPatchBox, setShowPatchBox] = useState<boolean>(false);
-    const [patchToolNumber, setpatchToolNumber] = useState<number>(0);
+    const [patchToolNumber, setPatchToolNumber] = useState<number>(0);
 
     // state: 검색어 상태 //
     const [searchWord, setSearchWord] = useState<string>('');
@@ -314,9 +312,10 @@ export default function MM() {
     const [originalList, setOriginalList] = useState<Tool[]>([]);
 
     const { 
-            currentPage, totalPage, totalCount, viewList, pageList, setTotalList, initViewList,
-            onPreSectionClickHandler, onPageClickHandler, onNextSectionClickHandler 
-        } = usePagination<Tool>();
+        currentPage, totalPage, totalCount, viewList, pageList,
+        setTotalList, initViewList,
+        onPageClickHandler, onPreSectionClickHandler, onNextSectionClickHandler
+    } = usePagination<Tool>();
 
     // function: tool list 불러오기 함수 //
     const getToolList = () => {
@@ -345,7 +344,7 @@ export default function MM() {
 
     // function: 등록 박스 뷰 상태 변경 함수 //
     const unShowPostBox = () => setShowPostBox(false);
-    
+
     // function: 수정 박스 뷰 상태 변경 함수 //
     const unShowPatchBox = () => setShowPatchBox(false);
 
@@ -358,7 +357,7 @@ export default function MM() {
     // event handler: 수정 버튼 클릭 이벤트 처리 함수 //
     const onUpdateButtonClickHandler = (toolNumber: number) => {
         setShowPatchBox(true);
-        setpatchToolNumber(toolNumber);
+        setPatchToolNumber(toolNumber);
     };
 
     // event handler: 검색어 변경 이벤트 처리 함수 //
@@ -368,7 +367,7 @@ export default function MM() {
     };
 
     // event handler: 검색 버튼 클릭 이벤트 처리 함수 //
-    const onSearchButtonHandler = () => {
+    const onSearchButtonClickHandler = () => {
         const searchedToolList = originalList.filter(tool => tool.name.includes(searchWord));
         setTotalList(searchedToolList);
         initViewList(searchedToolList);
@@ -398,20 +397,20 @@ export default function MM() {
                             <div className='td-delete'>삭제</div>
                         </div>
                     </div>
-                    {viewList.map((tool, index) => <TableRow key={index} tool={tool} getToolList={getToolList} onUpdateButtonClickHandler={onUpdateButtonClickHandler}/>)}
+                    {viewList.map((tool, index) => <TableRow key={index} tool={tool} getToolList={getToolList} onUpdateButtonClickHandler={onUpdateButtonClickHandler} />)}
                 </div>
             </div>
             <div className='bottom'>
                 <Pagination 
                     pageList={pageList} 
-                    currentPage={currentPage}
+                    currentPage={currentPage} 
                     onPageClickHandler={onPageClickHandler}
                     onPreSectionClickHandler={onPreSectionClickHandler}
                     onNextSectionClickHandler={onNextSectionClickHandler}
                 />
                 <div className='search-box'>
-                    <input className='search-input' value={searchWord} placeholder='검색어를 입력하세요.' onChange={onSearchWordChangeHandler}/>
-                    <div className='button disable' onClick={onSearchButtonHandler}>검색</div>
+                    <input className='search-input' value={searchWord} placeholder='검색어를 입력하세요.' onChange={onSearchWordChangeHandler} />
+                    <div className='button disable' onClick={onSearchButtonClickHandler}>검색</div>
                 </div>
             </div>
         </div>
