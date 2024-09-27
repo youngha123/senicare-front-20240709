@@ -2,7 +2,7 @@ import React from 'react'
 import './style.css';
 
 // interface: 페이지네이션 컴포넌트 properties //
-interface PaginationProps {
+interface paginationProps {
     pageList: number[];
     currentPage: number;
     onPageClickHandler: (page: number) => void;
@@ -18,7 +18,7 @@ export default function Pagination({
     onPageClickHandler,
     onPreSectionClickHandler, 
     onNextSectionClickHandler
-}: PaginationProps) {
+}: paginationProps) {
 
     // render: 페이지네이션 컴포넌트 렌더링 //
     return (

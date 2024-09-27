@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { IdCheckRequestDto, SignInRequestDto, SignUpRequestDto, TelAuthCheckRequestDto, TelAuthRequestDto } from "./dto/request/auth";
 import { ResponseDto } from "./dto/response";
 import { SignInResponseDto } from "./dto/response/auth";
-import { GetSignInResponseDto } from "./dto/response/nurse";
+import { GetNurseListResponseDto, GetSignInResponseDto } from "./dto/response/nurse";
 import { PatchToolRequestDto, PostToolRequestDto } from "./dto/request/tool";
 import { GetToolListResponseDto, GetToolResponseDto } from "./dto/response/tool";
 import { GetCustomerListResponseDto } from "./dto/response/customer";
@@ -20,29 +20,29 @@ const SIGN_IN_API_URL = `${AUTH_MODULE_URL}/sign-in`;
 
 const NURSE_MODUEL_URL = `${SENICARE_API_DOMAIN}/api/v1/nurse`;
 
+const GET_NURSE_LIST_API_URL = `${NURSE_MODUEL_URL}`;
 const GET_SIGN_IN_API_URL = `${NURSE_MODUEL_URL}/sign-in`;
 
-const TOOL_MODUL_URL = `${SENICARE_API_DOMAIN}/api/v1/tool`;
+const TOOL_MODULE_URL = `${SENICARE_API_DOMAIN}/api/v1/tool`;
 
-const POST_TOOL_API_URL = `${TOOL_MODUL_URL}`;
-const GET_TOOL_LIST_API_URL = `${TOOL_MODUL_URL}`;
-const GET_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODUL_URL}/${toolNumber}`;
-const PATCH_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODUL_URL}/${toolNumber}`;
-const DELETE_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODUL_URL}/${toolNumber}`;
+const POST_TOOL_API_URL = `${TOOL_MODULE_URL}`;
+const GET_TOOL_LIST_API_URL = `${TOOL_MODULE_URL}`;
+const GET_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODULE_URL}/${toolNumber}`;
+const PATCH_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODULE_URL}/${toolNumber}`;
+const DELETE_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODULE_URL}/${toolNumber}`;
 
 const CUSTOMER_MODULE_URL = `${SENICARE_API_DOMAIN}/api/v1/customer`;
 
 const GET_CUSTOMER_LIST_API_URL = `${CUSTOMER_MODULE_URL}`;
 const DELETE_CUSTOMER_API_URL = (customerNumber: number | string) => `${CUSTOMER_MODULE_URL}/${customerNumber}`;
 
-// function: Authorization Bearer 헤더 //
-const bearerAuthorization = (accessToken: String) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } })
+// function: Authorizarion Bearer 헤더 //
+const bearerAuthorization = (accessToken: string) => ({ headers: { 'Authorization': `Bearer ${accessToken}` } })
 
 // function: response data 처리 함수 //
 const responseDataHandler = <T>(response: AxiosResponse<T, any>) => {
     const { data } = response;
     return data;
-    
 };
 
 // function: response error 처리 함수 //
@@ -50,7 +50,7 @@ const responseErrorHandler = (error: any) => {
     if (!error.response) return null;
     const { data } = error.response;
     return data as ResponseDto;
-}
+};
 
 // function: id check api 요청 함수 //
 export const idCheckRequest = async (requestBody: IdCheckRequestDto) => {
@@ -87,13 +87,21 @@ export const signUpRequest = async (requestBody: SignUpRequestDto) => {
 // function: sign in 요청 함수 //
 export const signInRequest = async (requestBody: SignInRequestDto) => {
     const responseBody = await axios.post(SIGN_IN_API_URL, requestBody)
-        .then(responseDataHandler<SignInResponseDto>) 
+        .then(responseDataHandler<SignInResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function: get nurse list 요청 함수 //
+export const getNurseListRequest = async (accessToken: string) => {
+    const responseBody = await axios.get(GET_NURSE_LIST_API_URL, bearerAuthorization(accessToken))
+        .then(responseDataHandler<GetNurseListResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
 };
 
 // function: get sign in 요청 함수 //
-export const getSignInRequest = async (accessToken: String) => {
+export const getSignInRequest = async (accessToken: string) => {
     const responseBody = await axios.get(GET_SIGN_IN_API_URL, bearerAuthorization(accessToken))
         .then(responseDataHandler<GetSignInResponseDto>)
         .catch(responseErrorHandler);
@@ -133,7 +141,7 @@ export const patchToolRequest = async (requestBody: PatchToolRequestDto, toolNum
 };
 
 // function: delete tool 요청 함수 //
-export const deleteToolRequest = async (toolNumber: number | string, accessToken:string) => {
+export const deleteToolRequest = async (toolNumber: number | string, accessToken: string) => {
     const responseBody = await axios.delete(DELETE_TOOL_API_URL(toolNumber), bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
         .catch(responseErrorHandler);
