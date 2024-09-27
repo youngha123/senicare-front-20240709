@@ -62,3 +62,31 @@
     font-weight: 400;
     line-height: 20px;
 }
+
+#cs-detail-wrapper .button-box {
+    display: flex;
+    gap: 12px;
+}
+
+#cs-detail-wrapper .title {
+    color: rgba(64, 64, 64, 1);
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#cs-detail-wrapper .td-record-date,
+#cs-detail-wrapper .td-used-tool-count {
+    width: 100px;
+
+    text-align: center;
+}
+
+#cs-detail-wrapper .td-record-contents {
+    flex: 1;
+}
+
+#cs-detail-wrapper .td-used-tool {
+    width: 120px;
+
+    text-align: center;
+}

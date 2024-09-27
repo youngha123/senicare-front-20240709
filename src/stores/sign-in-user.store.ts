@@ -1,4 +1,4 @@
-import SignInUser from "src/types/sign-in-user.interface";
+import { SignInUser } from "src/types";
 import { create } from "zustand";
 
 interface SignInUserStore {
