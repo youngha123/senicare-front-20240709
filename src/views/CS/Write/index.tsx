@@ -11,7 +11,7 @@ import { ResponseDto } from 'src/apis/dto/response';
 import { Nurse } from 'src/types';
 import Pagination from 'src/components/Pagination';
 import { useNavigate } from 'react-router';
-import { PostCustomerRequestDto } from 'src/apis/dto/request/nurse';
+import { PostCustomerRequestDto } from 'src/apis/dto/request/customer';
 import { isSetIterator } from 'util/types';
 
 // variable: 기본 프로필 이미지 URL //
