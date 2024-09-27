@@ -7,6 +7,7 @@ import { PatchToolRequestDto, PostToolRequestDto } from "./dto/request/tool";
 import { GetToolListResponseDto, GetToolResponseDto } from "./dto/response/tool";
 import { GetCustomerListResponseDto } from "./dto/response/customer";
 import { error } from "console";
+import { PostCustomerRequestDto } from "./dto/request/nurse";
 
 // variable: API URL 상수 //
 const SENICARE_API_DOMAIN = 'http://localhost:4000';
@@ -34,6 +35,7 @@ const DELETE_TOOL_API_URL = (toolNumber: number | string) => `${TOOL_MODULE_URL}
 
 const CUSTOMER_MODULE_URL = `${SENICARE_API_DOMAIN}/api/v1/customer`;
 
+const POST_CUSTOMER_API_URL = `${CUSTOMER_MODULE_URL}`;
 const GET_CUSTOMER_LIST_API_URL = `${CUSTOMER_MODULE_URL}`;
 const DELETE_CUSTOMER_API_URL = (customerNumber: number | string) => `${CUSTOMER_MODULE_URL}/${customerNumber}`;
 
@@ -144,6 +146,14 @@ export const patchToolRequest = async (requestBody: PatchToolRequestDto, toolNum
 // function: delete tool 요청 함수 //
 export const deleteToolRequest = async (toolNumber: number | string, accessToken: string) => {
     const responseBody = await axios.delete(DELETE_TOOL_API_URL(toolNumber), bearerAuthorization(accessToken))
+        .then(responseDataHandler<ResponseDto>)
+        .catch(responseErrorHandler);
+    return responseBody;
+};
+
+// function: post customer 요청 함수 //
+export const postCustomerRequest = async (requestBody: PostCustomerRequestDto, accessToken: string) => {
+    const responseBody = await axios.post(POST_CUSTOMER_API_URL, requestBody, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
