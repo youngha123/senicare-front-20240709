@@ -178,7 +178,7 @@ export const getCustomerRequest = async (customerNumber: number | string, access
 };
 
 // function: patch customer 요청 함수 //
-export const PatchCustomerRequest = async (requestBody: PatchCustomerRequestDto, customerNumber: number | string, accessToken: string) => {
+export const patchCustomerRequest = async (requestBody: PatchCustomerRequestDto, customerNumber: number | string, accessToken: string) => {
     const responseBody = await axios.patch(PATCH_CUSTOMER_API_URL(customerNumber), requestBody, bearerAuthorization(accessToken))
         .then(responseDataHandler<ResponseDto>)
         .catch(responseErrorHandler);
