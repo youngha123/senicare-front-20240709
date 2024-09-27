@@ -6,6 +6,7 @@ import { GetNurseListResponseDto, GetSignInResponseDto } from "./dto/response/nu
 import { PatchToolRequestDto, PostToolRequestDto } from "./dto/request/tool";
 import { GetToolListResponseDto, GetToolResponseDto } from "./dto/response/tool";
 import { GetCustomerListResponseDto } from "./dto/response/customer";
+import { error } from "console";
 
 // variable: API URL 상수 //
 const SENICARE_API_DOMAIN = 'http://localhost:4000';
@@ -162,4 +163,16 @@ export const deleteCustomerRequest = async (customerNumber: number | string, acc
         .then(responseDataHandler<ResponseDto>)
         .catch(responseErrorHandler);
     return responseBody;
+};
+
+const FILE_UPLOAD_URL = `${SENICARE_API_DOMAIN}/file/upload`;
+
+const multipart = { headers: { 'Content-Type' : 'multipart/form-data' } };
+
+// function: file upload 요청 함수 //
+export const fileUploadRequest = async (requestBody: FormData) => {
+    const url = await axios.post(FILE_UPLOAD_URL, requestBody, multipart)
+        .then(responseDataHandler<string>)
+        .catch(error => null);
+    return url;
 };
