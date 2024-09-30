@@ -44,12 +44,12 @@ export default function CSDetail() {
 
     // function: get customer response 처리 함수 //
     const getCustomerResponse = (responseBody: GetCustomerResponseDto | ResponseDto | null) => {
-        const message = 
+        const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
-            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+                responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+                    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+                        responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
+                            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
@@ -69,11 +69,11 @@ export default function CSDetail() {
 
     // function: get care record list response 처리 함수 //
     const getCareRecordListResponse = (responseBody: GetCareRecordResponseDto | ResponseDto | null) => {
-        const message = 
+        const message =
             !responseBody ? '서버에 문제가 있습니다.' :
-            responseBody.code === 'VF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+                responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+                    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+                        responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
@@ -87,13 +87,13 @@ export default function CSDetail() {
 
     // function: delete customer response 처리 함수 //
     const deleteCustomerResponse = (responseBody: ResponseDto | null) => {
-        const message = 
-            !responseBody ? '서버에 문제가 있습니다.' : 
-            responseBody.code === 'VF' ? '잘못된 접근입니다.' : 
-            responseBody.code === 'AF' ? '잘못된 접근입니다.' :
-            responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
-            responseBody.code === 'NP' ? '권한이 없습니다.' :
-            responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
+        const message =
+            !responseBody ? '서버에 문제가 있습니다.' :
+                responseBody.code === 'VF' ? '잘못된 접근입니다.' :
+                    responseBody.code === 'AF' ? '잘못된 접근입니다.' :
+                        responseBody.code === 'NC' ? '존재하지 않는 고객입니다.' :
+                            responseBody.code === 'NP' ? '권한이 없습니다.' :
+                                responseBody.code === 'DBE' ? '서버에 문제가 있습니다.' : '';
 
         const isSuccessed = responseBody !== null && responseBody.code === 'SU';
         if (!isSuccessed) {
@@ -136,7 +136,7 @@ export default function CSDetail() {
         if (!customerNumber) return;
         const accessToken = cookies[ACCESS_TOKEN];
         if (!accessToken) return;
-        
+
         getCustomerRequest(customerNumber, accessToken).then(getCustomerResponse);
         getCareRecordListRequest(customerNumber, accessToken).then(getCareRecordListResponse);
     }, [customerNumber]);
@@ -176,27 +176,48 @@ export default function CSDetail() {
                             <div className='td-used-tool-count'>개수</div>
                         </div>
                         {viewList.map((careRecord, index) =>
-                        <div key={index} className='tr'>
-                            <div className='td-record-date'>{careRecord.recordDate}</div>
-                            <div className='td-record-contents'>{careRecord.contents}</div>
-                            <div className='td-used-tool'>{careRecord.usedToolName}</div>
-                            <div className='td-used-tool-count'>{careRecord.count}</div>
-                        </div>
+                            <div key={index} className='tr'>
+                                <div className='td-record-date'>{careRecord.recordDate}</div>
+                                <div className='td-record-contents'>{careRecord.contents}</div>
+                                <div className='td-used-tool'>{careRecord.usedToolName}</div>
+                                <div className='td-used-tool-count'>{careRecord.count}</div>
+                            </div>
                         )}
                     </div>
                 </div>
             </div>
             <div className='middle'>
-                <div className='title'></div>
-                <div className=''></div>
+                <div className='title'>기록 작성</div>
+                    <div className='record-write-box'>
+                        <div className='record-write-content-box'>
+                            <div className='input-box' style={{ flex: 1 }} >
+                                <div className='label'>내용</div>
+                                <input className='input' placeholder='내용을 입력하세요.'/>
+                            </div>
+                            <div className='button disable'>기록</div>
+                        </div>
+                        <div className='record-write-tool-box'>
+                            <div className='input-box' >
+                                <div className='label'>사용용품</div>
+                                <div className='selector close'>
+                                    <div className='selected-item'>사용용품</div>
+                                    <div className='arrow-down-button'></div>
+                                </div>
+                            </div>
+                            <div className='input-box' >
+                                <div className='label'>개수</div>
+                                <input className='input' placeholder='개수를 입력하세요.'/>
+                            </div>
+                        </div>
+                    </div>
             </div>
             <div className='bottom'>
                 <div className='button primary' onClick={onListButtonClickHandler}>목록</div>
                 {isCharger &&
-                <div className='button-box'>
-                    <div className='button second' onClick={onUpdateButtonClickHandler}>수정</div>
-                    <div className='button error' onClick={onDeleteButtonClickHandler}>삭제</div>
-                </div>
+                    <div className='button-box'>
+                        <div className='button second' onClick={onUpdateButtonClickHandler}>수정</div>
+                        <div className='button error' onClick={onDeleteButtonClickHandler}>삭제</div>
+                    </div>
                 }
             </div>
         </div>
