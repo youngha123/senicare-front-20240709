@@ -103,7 +103,7 @@ export default function HR() {
     const onSearchButtonClickHandler = () => {
         const searchedNurseList = originalList.filter(nurse => nurse.name.includes(searchWord));
         setTotalList(searchedNurseList);
-        initViewList(searchedNurseList);
+        initViewList(searchedNurseList); 
     };
 
     // effect: 컴포넌트 로드시 요양사 리스트 불러오기 함수 //
