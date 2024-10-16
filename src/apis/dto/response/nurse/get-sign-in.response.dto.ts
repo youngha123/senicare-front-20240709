@@ -5,4 +5,4 @@ export default interface GetSignInResponseDto extends ResponseDto {
     userId: string;
     name: string;
     telNumber: string;
-}
+} 
